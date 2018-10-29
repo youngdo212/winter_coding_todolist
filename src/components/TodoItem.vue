@@ -71,6 +71,7 @@ export default {
     },
 
     startDrag(e) {
+      if(this.editMode) e.preventDefault();
       e.dataTransfer.setData('text/plain', this.todo.id);
     },
 
