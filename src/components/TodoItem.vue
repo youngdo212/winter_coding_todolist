@@ -3,7 +3,8 @@
     class="todo"
     :class="{'todo--complete': todo.done}"
   >
-    <div>{{todo.name}}</div>
+    <div>{{todo.title}}</div>
+    <div>{{todo.description}}</div>
     <button
       @click="clickRemove"
     >
@@ -19,7 +20,7 @@
 
 <script>
 export default {
-  name: 'todo',
+  name: 'TodoItem',
 
   props: {
     todo: {
@@ -45,7 +46,7 @@ export default {
 <style scoped>
 
 .todo {
-  width: 200px; height: 50px;
+  width: 300px; height: 100px;
   background: #eee;
 }
 

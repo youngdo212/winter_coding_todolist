@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Form
+    <SubmitForm
       @form-submitted="addTodo"
     />
     <button
@@ -27,14 +27,14 @@
 </template>
 
 <script>
-import Form from './components/Form.vue'
+import SubmitForm from './components/SubmitForm.vue'
 import Todolist from './components/Todolist.vue';
 
 export default {
   name: 'app',
   
   components: {
-    Form,
+    SubmitForm,
     Todolist,
   },
 

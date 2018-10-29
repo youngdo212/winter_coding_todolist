@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Todo
+    <TodoItem
       v-for="(todo, index) in filteredTodos"
       :key="index"
       :todo="todo"
@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import Todo from './Todo.vue';
+import TodoItem from './TodoItem.vue';
 
 export default {
-  name: 'todolist',
+  name: 'Todolist',
 
   components: {
-    Todo,
+    TodoItem,
   },
 
   props: {
