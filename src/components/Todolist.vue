@@ -5,6 +5,7 @@
       :key="index"
       :todo="todo"
       @remove-button-clicked="removeTodo"
+      @todo-dropped="moveTodo"
     />
   </div>
 </template>
@@ -37,6 +38,10 @@ export default {
   methods: {
     removeTodo(todo) {
       this.$emit('todo-removed', todo)
+    },
+
+    moveTodo(e) {
+      this.$emit('todo-moved', e);
     }
   },
 

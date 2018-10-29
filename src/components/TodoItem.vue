@@ -2,6 +2,10 @@
   <div
     class="todo"
     :class="{'todo--complete': todo.done}"
+    draggable="true"
+    @dragstart="startDrag"
+    @dragover="moveDrag"
+    @drop="drop"
   >
     <div v-if="!editMode">{{todo.title}}</div>
     <input
@@ -64,6 +68,23 @@ export default {
 
     save() {
       this.editMode = false;
+    },
+
+    startDrag(e) {
+      e.dataTransfer.setData('text/plain', this.todo.id);
+    },
+
+    moveDrag(e) {
+      e.preventDefault();
+    },
+
+    drop(e) {
+      const sourceId = Number(e.dataTransfer.getData('text/plain'));
+      const destinationId = this.todo.id;
+
+      if(sourceId === destinationId) return;
+
+      this.$emit('todo-dropped', {sourceId, destinationId});
     }
   },
 }

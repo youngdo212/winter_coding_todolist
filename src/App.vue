@@ -22,6 +22,7 @@
       :todos="todos"
       :flag="flag"
       @todo-removed="removeTodo"
+      @todo-moved="moveTodo"
     />
   </div>
 </template>
@@ -62,6 +63,22 @@ export default {
 
     setFlag(flag) {
       this.flag = flag;
+    },
+
+    // refactor
+    moveTodo({sourceId, destinationId}) {
+      let sourceTodo = null;
+
+      this.todos = this.todos.filter((todo) => {
+        if(todo.id !== sourceId) return true;
+        sourceTodo = todo;
+        return false;
+      })
+
+      this.todos = this.todos.reduce((todos, todo) => {
+        if(todo.id !== destinationId) return todos.concat(todo);
+        return todos.concat(todo, sourceTodo);
+      }, []);
     }
   }
 }
