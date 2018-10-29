@@ -6,7 +6,7 @@
     </div>
     <div>
       <label for="todo-decription">decription</label>
-      <textarea id="todo-decription" v-model="description"></textarea>
+      <textarea id="todo-decription" v-model="description"/>
     </div>
     <button
       @click="submit"

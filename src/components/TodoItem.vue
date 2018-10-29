@@ -3,17 +3,29 @@
     class="todo"
     :class="{'todo--complete': todo.done}"
   >
-    <div>{{todo.title}}</div>
-    <div>{{todo.description}}</div>
-    <button
-      @click="clickRemove"
+    <div v-if="!editMode">{{todo.title}}</div>
+    <input
+      v-if="editMode"
+      v-model="todo.title"
     >
-      REMOVE
+    <div v-if="!editMode">{{todo.description}}</div>
+    <textarea
+      v-if="editMode"
+      v-model="todo.description"
+    />
+    <button @click="clickRemove">REMOVE</button>
+    <button @click="toggleCompleteButton">COMPLETE</button>
+    <button
+      v-if="!editMode"
+      @click="edit"
+    >
+      EDIT
     </button>
     <button
-      @click="toggleCompleteButton"
+      v-if="editMode"
+      @click="save"
     >
-      COMPLETE
+      SAVE
     </button>
   </div>
 </template>
@@ -31,6 +43,12 @@ export default {
     }
   },
 
+  data() {
+    return {
+      editMode: false,
+    }
+  },
+
   methods: {
     clickRemove() {
       this.$emit('remove-button-clicked', this.todo);
@@ -38,8 +56,16 @@ export default {
 
     toggleCompleteButton() {
       this.todo.done = !this.todo.done;
+    },
+
+    edit() {
+      this.editMode = true;
+    },
+
+    save() {
+      this.editMode = false;
     }
-  }
+  },
 }
 </script>
 
