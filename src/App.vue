@@ -1,28 +1,72 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Form
+      @form-submitted="addTodo"
+    />
+    <button
+      @click="setFlag('all')"
+    >
+      All
+    </button>
+    <button
+      @click="setFlag('uncompleted')"
+    >
+      Uncompleted
+    </button>
+    <button
+      @click="setFlag('completed')"
+    >
+      Completed
+    </button>
+    <Todolist
+      :todos="todos"
+      :flag="flag"
+      @todo-removed="removeTodo"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Form from './components/Form.vue'
+import Todolist from './components/Todolist.vue';
 
 export default {
   name: 'app',
+  
   components: {
-    HelloWorld
+    Form,
+    Todolist,
+  },
+
+  data() {
+    return {
+      id: 0,
+      todos: [],
+      flag: 'all',
+    }
+  },
+
+  methods: {
+    addTodo(todo) {
+      todo.id = this.id++;
+      todo.done = false;
+
+      this.todos.push(todo);
+    },
+
+    removeTodo({id}) {
+      this.todos = this.todos.filter((todo) => {
+        return todo.id !== id;
+      })
+    },
+
+    setFlag(flag) {
+      this.flag = flag;
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+
 </style>
