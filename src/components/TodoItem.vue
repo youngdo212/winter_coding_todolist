@@ -1,7 +1,7 @@
 <template>
   <div
     class="todo"
-    :class="{'todo--complete': todo.done}"
+    :class="{'todo--complete': todo.done, 'todo--expired': expired}"
     draggable="true"
     @dragstart="startDrag"
     @dragover="moveDrag"
@@ -31,12 +31,29 @@
     >
       SAVE
     </button>
+    <TodoItemTimer
+      v-if="!todo.done"
+      ref="timer"
+      :targetTime="todo.expireTime"
+      @time-over="expireTodo"
+    />
+    <div
+      v-if="todo.done"
+    >
+      useless time
+    </div>
   </div>
 </template>
 
 <script>
+import TodoItemTimer from './TodoItemTimer.vue';
+
 export default {
   name: 'TodoItem',
+
+  components: {
+    TodoItemTimer,
+  },
 
   props: {
     todo: {
@@ -50,11 +67,13 @@ export default {
   data() {
     return {
       editMode: false,
+      expired: false,
     }
   },
 
   methods: {
     clickRemove() {
+      this.$refs.timer.end();
       this.$emit('remove-button-clicked', this.todo);
     },
 
@@ -86,6 +105,10 @@ export default {
       if(sourceId === destinationId) return;
 
       this.$emit('todo-dropped', {sourceId, destinationId});
+    },
+
+    expireTodo() {
+      this.expired = true;
     }
   },
 }
@@ -101,6 +124,10 @@ export default {
 .todo--complete {
   background: #bbb;
   text-decoration: line-through;
+}
+
+.todo--expired {
+  color: red;
 }
 
 </style>
