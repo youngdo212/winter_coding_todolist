@@ -1,8 +1,8 @@
 <template>
   <div>
     <TodoItem
-      v-for="(todo, index) in filteredTodos"
-      :key="index"
+      v-for="todo in filteredTodos"
+      :key="todo.id"
       :todo="todo"
       @remove-button-clicked="removeTodo"
       @todo-dropped="moveTodo"
