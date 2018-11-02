@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <label for="date">Date</label>
-    <input type="text" id="date" v-model="date">
-    <label for="time">Time</label>
-    <input type="text" id="time" v-model="time">
+  <div class="date-form">
+    <div class="date-form__date-wrap">
+      <label class="date-form__label" for="date">Date</label>
+      <input id="date-form__input" type="text" placeholder="0000/00/00" v-model="date">
+    </div>
+    <div class="date-form__time-wrap">
+      <label class="date-form__label" for="time">Time</label>
+      <input id="date-form__input" type="text" placeholder="00:00" v-model="time">
+    </div>
   </div>
 </template>
 
@@ -67,5 +71,31 @@ export default {
 </script>
 
 <style scoped>
+.date-form {
+  width: 100%;
+  overflow: hidden;
+}
 
+.date-form__date-wrap {
+  float: left;
+  width: 45%;
+}
+
+.date-form__time-wrap {
+  float: right;
+  width: 45%;
+}
+
+.date-form__label {
+  font-size: 0.9rem;
+}
+
+#date-form__input {
+  box-sizing: border-box;
+  width: 100%;
+  outline: 0px;
+  border: 0px; padding: 5px;
+  font-size: 1rem;
+  margin-top: 2px;
+}
 </style>
