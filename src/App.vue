@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <SubmitForm
+    <BaseForm
       @form-submitted="addTodo"
     />
     <button
@@ -28,14 +28,14 @@
 </template>
 
 <script>
-import SubmitForm from './components/SubmitForm.vue'
+import BaseForm from './components/BaseForm.vue';
 import Todolist from './components/Todolist.vue';
 
 export default {
   name: 'app',
   
   components: {
-    SubmitForm,
+    BaseForm,
     Todolist,
   },
 
@@ -48,10 +48,13 @@ export default {
   },
 
   methods: {
-    addTodo(todo) {
-      todo.id = this.id++;
-      todo.done = false;
+    addTodo(form) {
+      const todo = {
+        id: this.id++,
+        done: false,
+      }
 
+      Object.assign(todo, form);
       this.todos.push(todo);
     },
 

@@ -32,7 +32,7 @@
       SAVE
     </button>
     <TodoItemTimer
-      v-if="!todo.done"
+      v-if="todo.expireTime && !todo.done"
       ref="timer"
       :targetTime="todo.expireTime"
       @time-over="expireTodo"
