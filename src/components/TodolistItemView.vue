@@ -162,6 +162,7 @@ export default {
 .todo__description {
   font-size: 1rem;
   padding: 5px;
+  overflow: scroll;
 }
 
 .todo__edit-button {

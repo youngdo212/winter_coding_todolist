@@ -87,6 +87,6 @@ export default {
 <style scoped>
 
 .todo-wrap {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 </style>

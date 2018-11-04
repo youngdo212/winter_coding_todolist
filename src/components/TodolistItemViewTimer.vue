@@ -100,5 +100,6 @@ export default {
   width: 100%;
   padding: 0px 15px;
   font-size: 0.8rem;
+  text-align: right;
 }
 </style>

@@ -1,42 +1,39 @@
 <template>
   <div id="app">
-    <button
-      @click="setFlag('all')"
-    >
-      All
-    </button>
-    <button
-      @click="setFlag('uncompleted')"
-    >
-      Uncompleted
-    </button>
-    <button
-      @click="setFlag('completed')"
-    >
-      Completed
-    </button>
-    <Todolist
-      :todos="todos"
-      :flag="flag"
-      @todo-removed="removeTodo"
-      @todo-moved="moveTodo"
-    />
-    <div
-      v-if="!formActive"
-      class="create-button"
-      @click="formActive = true;"
-    >
-      + Add Todo
+    <div class="app__flag">
+      <BaseButtonFlag
+        v-for="(flag, index) in flags"
+        :key="index"
+        :name="flag"
+        :active="flag === selectedFlag ? true : false"
+        @button-clicked="setFlag"
+      />
     </div>
-    <BaseForm
-      v-if="formActive"
-      @form-submitted="addTodo"
-      @form-closed="formActive = false"
-    />
+    <div class="app__body">
+      <Todolist
+        :todos="todos"
+        :flag="selectedFlag"
+        @todo-removed="removeTodo"
+        @todo-moved="moveTodo"
+      />
+      <div
+        v-if="!formActive"
+        class="create-button"
+        @click="formActive = true;"
+      >
+        + Add Todo
+      </div>
+      <BaseForm
+        v-if="formActive"
+        @form-submitted="addTodo"
+        @form-closed="formActive = false"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import BaseButtonFlag from './components/BaseButtonFlag.vue'
 import BaseForm from './components/BaseForm.vue';
 import Todolist from './components/Todolist.vue';
 
@@ -44,6 +41,7 @@ export default {
   name: 'app',
   
   components: {
+    BaseButtonFlag,
     BaseForm,
     Todolist,
   },
@@ -52,7 +50,8 @@ export default {
     return {
       id: 0,
       todos: [],
-      flag: 'all',
+      flags: ['all', 'uncompleted', 'completed'],
+      selectedFlag: 'all',
       formActive: false,
     }
   },
@@ -76,7 +75,7 @@ export default {
     },
 
     setFlag(flag) {
-      this.flag = flag;
+      this.selectedFlag = flag;
     },
 
     // refactor
@@ -100,9 +99,18 @@ export default {
 
 <style scoped>
 #app {
-  display: inline-block;
+  display: block;
+  margin: auto;
+  margin-top: 10vh;
+  margin-bottom: 10vh;
   width: 350px;
-  border-radius: 10px;
+}
+
+.app__flag {
+}
+
+.app__body {
+  width: 100%;
   background: rgb(84, 233, 158);
   padding: 10px;
 }
@@ -115,6 +123,7 @@ export default {
   font-size: 1.2rem;
   cursor: default;
   text-align: center;
+  margin-top: 10px;
 }
 
 .create-button:hover {
