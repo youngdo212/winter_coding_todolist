@@ -34,14 +34,12 @@
 </template>
 
 <script>
-import BaseCheckBox from './BaseCheckBox.vue';
 import BaseFormDate from './BaseFormDate.vue';
 
 export default {
   name: 'BaseForm',
 
   components: {
-    BaseCheckBox,
     BaseFormDate,
   },
 

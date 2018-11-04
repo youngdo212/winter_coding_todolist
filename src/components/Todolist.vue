@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TodoItem
+    <TodolistItem
       v-for="todo in filteredTodos"
       :key="todo.id"
       :todo="todo"
@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import TodoItem from './TodoItem.vue';
+import TodolistItem from './TodolistItem.vue';
 
 export default {
   name: 'Todolist',
 
   components: {
-    TodoItem,
+    TodolistItem,
   },
 
   props: {

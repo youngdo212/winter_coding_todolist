@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'TodoItemTimer',
+  name: 'TodolistItemViewTimer',
 
   props: {
     targetTime: Number,
