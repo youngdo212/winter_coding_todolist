@@ -80,7 +80,15 @@ export default {
       if(minutes) return `약 ${minutes}분`;
 
       const seconds = Math.floor(this.restTime / 1000);
+
       return `${seconds}초`;
+    }
+  },
+
+  watch: {
+    targetTime() {
+      this.end();
+      this.start();
     }
   }
 }

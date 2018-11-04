@@ -16,27 +16,16 @@ export default {
   name: 'BaseFormDate',
 
   props: {
-    initialDate: {
-      type: String,
-      default() {
-        const today = new Date();
-        const todayYear = today.getFullYear();
-        const todayMonth = today.getMonth()+1;
-        const todayDate = today.getDate();
-
-        return `${todayYear}/${todayMonth}/${todayDate}`;
-      }
-    },
     initialTime: {
-      type: String,
-      default: '00:00',
+      type: Number,
+      default: new Date().getTime(),
     }
   },
 
   data() {
     return {
-      date: this.initialDate,
-      time: this.initialTime,
+      date: `${new Date(this.initialTime).getFullYear()}/${new Date(this.initialTime).getMonth()+1}/${new Date(this.initialTime).getDate()}`,
+      time: `${new Date(this.initialTime).getHours()}:${new Date(this.initialTime).getMinutes()}`,
     }
   },
 

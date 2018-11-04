@@ -2,7 +2,7 @@
   <span
     class="checkbox"
     :class="{'checkbox--disabled': disabled}"
-    @click="check"
+    @click.stop="check"
   >
     <svg
       version="1.1"
@@ -39,7 +39,7 @@ export default {
       if(this.disabled) return;
 
       this.checked = !this.checked;
-      this.checked && this.$emit('checked');
+      this.$emit('checked', this.checked);
     }
   }
 }

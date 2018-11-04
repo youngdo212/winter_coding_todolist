@@ -1,9 +1,5 @@
 <template>
   <div class="form">
-    <BaseCheckBox
-      class="form__checkbox"
-      :disabled="true"
-    />
     <input
       id="form__title"
       placeholder="Title"
@@ -25,14 +21,13 @@
     <BaseFormDate
       ref="dateFrom"
       v-if="timeSettingMode"
-      :initialDate="initialDate"
       :initialTime="initialTime"
     />
     <div
       class="form__submit-button"
-      @click="submit"
+      @click.stop="submit"
     >
-      ADD
+      SUBMIT
     </div>
   </div>
 </template>
@@ -58,15 +53,14 @@ export default {
       type: String,
       default: '',
     },
-    initialDate: String,
-    initialTime: String,
+    initialTime: Number,
   },
 
   data() {
     return {
       title: this.initialTitle,
       description: this.initialDescription,
-      timeSettingMode: this.initialDate && this.initialTime ? true : false,
+      timeSettingMode: this.initialTime ? true : false,
     }
   },
 
@@ -77,7 +71,7 @@ export default {
       const form = {
         title: this.title,
         description: this.description,
-        expireTime: this.timeSettingMode ? this.$refs.dateFrom.getTime() : null,
+        expireTime: this.timeSettingMode ? this.$refs.dateFrom.getTime() : undefined,
       };
 
       this.$emit('form-submitted', form);
@@ -121,7 +115,7 @@ export default {
 }
 
 .form__submit-button {
-  width: 60px;
+  width: 70px;
   background: #555;
   border-radius: 5px;
   text-align: center;

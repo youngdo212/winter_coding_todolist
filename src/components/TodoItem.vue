@@ -3,55 +3,58 @@
     class="todo"
     :class="{'todo--complete': todo.done, 'todo--expired': expired}"
     draggable="true"
+    @click="expand"
     @dragstart="startDrag"
     @dragover="moveDrag"
     @drop="drop"
   >
-    <div v-if="!editMode">{{todo.title}}</div>
-    <input
-      v-if="editMode"
-      v-model="todo.title"
-    >
-    <div v-if="!editMode">{{todo.description}}</div>
-    <textarea
-      v-if="editMode"
-      v-model="todo.description"
-    />
-    <button @click="clickRemove">REMOVE</button>
-    <button @click="toggleCompleteButton">COMPLETE</button>
-    <button
-      v-if="!editMode"
-      @click="edit"
-    >
-      EDIT
-    </button>
-    <button
-      v-if="editMode"
-      @click="save"
-    >
-      SAVE
-    </button>
-    <TodoItemTimer
-      v-if="todo.expireTime && !todo.done"
-      ref="timer"
-      :targetTime="todo.expireTime"
-      @time-over="expireTodo"
-    />
-    <div
-      v-if="todo.done"
-    >
-      useless time
+    <div class="todo__header">
+      <BaseCheckBox
+        class="todo__checkbox"
+        @checked="checkComplete"
+      />
+      <div
+        class="todo__title"
+      >
+        {{todo.title}}
+      </div>
     </div>
+    <div
+      v-show="expanded"
+      class="todo__body"
+    >
+      <div class="todo__description">{{todo.description}}</div>
+      <TodoItemTimer
+        v-if="todo.expireTime"
+        ref="timer"
+        class="todo__timer"
+        :targetTime="todo.expireTime"
+        @time-over="expireTodo"
+      />
+      <div class="todo__edit-button" @click.stop="edit">EDIT</div>
+    </div>
+    <BaseForm
+      v-if="editMode"
+      style="position: absolute; top: 0px; left: 0px;"
+      :initialTitle="todo.title"
+      :initialDescription="todo.description"
+      :initialTime="todo.expireTime"
+      @form-submitted="save"
+    />
   </div>
 </template>
 
 <script>
+import BaseForm from './BaseForm.vue';
+import BaseCheckBox from './BaseCheckBox.vue';
 import TodoItemTimer from './TodoItemTimer.vue';
 
 export default {
   name: 'TodoItem',
 
   components: {
+    BaseForm,
+    BaseCheckBox,
     TodoItemTimer,
   },
 
@@ -68,6 +71,7 @@ export default {
     return {
       editMode: false,
       expired: false,
+      expanded: false,
     }
   },
 
@@ -77,16 +81,22 @@ export default {
       this.$emit('remove-button-clicked', this.todo);
     },
 
-    toggleCompleteButton() {
-      this.todo.done = !this.todo.done;
+    checkComplete(checked) {
+      this.todo.done = checked;
+      checked ? this.$refs.timer.end() : this.$refs.timer.start();
     },
 
     edit() {
       this.editMode = true;
     },
 
-    save() {
+    save({title, description, expireTime}) {
+      this.todo.title = title;
+      this.todo.description = description;
+      this.todo.expireTime = expireTime;
+      
       this.editMode = false;
+      this.expired = false;
     },
 
     startDrag(e) {
@@ -109,7 +119,11 @@ export default {
 
     expireTodo() {
       this.expired = true;
-    }
+    },
+
+    expand() {
+      this.expanded = !this.expanded;
+    },
   },
 }
 </script>
@@ -117,17 +131,59 @@ export default {
 <style scoped>
 
 .todo {
-  width: 300px; height: 100px;
-  background: #eee;
+  position: relative;
+  box-sizing: border-box;
+  width: 300px;
+  padding: 7px;
+  background: #aaa;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
 }
 
-.todo--complete {
-  background: #bbb;
+.todo__checkbox {
+  vertical-align: middle;
+}
+
+.todo--complete .todo__title{
   text-decoration: line-through;
 }
 
-.todo--expired {
-  color: red;
+.todo--complete .todo__description, .todo--complete .todo__timer {
+  color: rgba(0,0,0,0.3);
 }
 
+.todo--expired {
+  background: red;
+}
+
+.todo__header {
+  background: yellow;
+}
+
+.todo__title {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  font-size: 1rem;
+  margin-left: 5px;
+}
+
+.todo__body {
+  background: orange;
+  margin-top: 7px;
+}
+
+.todo__description {
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.todo__edit-button {
+  width: 30px;
+  padding: 10px;
+  margin: auto;
+  border-radius: 5px;
+  background: blue;
+}
 </style>
