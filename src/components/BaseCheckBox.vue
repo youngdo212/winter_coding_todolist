@@ -1,5 +1,5 @@
 <template>
-  <span
+  <div
     class="checkbox"
     :class="{'checkbox--disabled': disabled}"
     @click.stop="check"
@@ -14,7 +14,7 @@
       <line x1="20" y1="50" x2="43" y2="75" stroke="#000" stroke-width="7"/>
       <line x1="39" y1="75" x2="80" y2="20" stroke="#000" stroke-width="7"/>
     </svg>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -48,7 +48,6 @@ export default {
 <style scoped>
 .checkbox {
   box-sizing: border-box;
-  display: inline-block;
   width: 27px; height: 27px;
   border: 1px solid #888;
   background: #fff;

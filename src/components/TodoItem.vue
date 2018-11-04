@@ -1,41 +1,49 @@
 <template>
   <div
-    class="todo"
-    :class="{'todo--complete': todo.done, 'todo--expired': expired}"
+    class="todo-wrap"
     draggable="true"
     @click="expand"
     @dragstart="startDrag"
     @dragover="moveDrag"
     @drop="drop"
   >
-    <div class="todo__header">
-      <BaseCheckBox
-        class="todo__checkbox"
-        @checked="checkComplete"
-      />
-      <div
-        class="todo__title"
-      >
-        {{todo.title}}
-      </div>
-    </div>
     <div
-      v-show="expanded"
-      class="todo__body"
+      v-show="!editMode"
+      class="todo"
+      :class="{'todo--complete': todo.done, 'todo--expired': expired}"
     >
-      <div class="todo__description">{{todo.description}}</div>
-      <TodoItemTimer
-        v-if="todo.expireTime"
-        ref="timer"
-        class="todo__timer"
-        :targetTime="todo.expireTime"
-        @time-over="expireTodo"
-      />
-      <div class="todo__edit-button" @click.stop="edit">EDIT</div>
+      <div class="todo__header">
+        <BaseCheckBox
+          class="todo__checkbox"
+          @checked="checkComplete"
+        />
+        <div
+          class="todo__title"
+        >
+          {{todo.title}}
+        </div>
+        <div
+          class="todo__delete-button"
+          @click.stop="clickRemove"
+        />
+      </div>
+      <div
+        v-show="expanded"
+        class="todo__body"
+      >
+        <div class="todo__description">{{todo.description}}</div>
+        <TodoItemTimer
+          v-if="todo.expireTime"
+          ref="timer"
+          class="todo__timer"
+          :targetTime="todo.expireTime"
+          @time-over="expireTodo"
+        />
+        <div class="todo__edit-button" @click.stop="edit">EDIT</div>
+      </div>
     </div>
     <BaseForm
       v-if="editMode"
-      style="position: absolute; top: 0px; left: 0px;"
       :initialTitle="todo.title"
       :initialDescription="todo.description"
       :initialTime="todo.expireTime"
@@ -77,12 +85,15 @@ export default {
 
   methods: {
     clickRemove() {
-      this.$refs.timer.end();
+      this.$refs.timer && this.$refs.timer.end();
       this.$emit('remove-button-clicked', this.todo);
     },
 
     checkComplete(checked) {
       this.todo.done = checked;
+
+      if(!this.$refs.timer) return;
+
       checked ? this.$refs.timer.end() : this.$refs.timer.start();
     },
 
@@ -130,19 +141,17 @@ export default {
 
 <style scoped>
 
+.todo-wrap {
+  margin-bottom: 5px;
+}
+
 .todo {
-  position: relative;
   box-sizing: border-box;
   width: 300px;
   padding: 7px;
   background: #aaa;
   border-radius: 5px;
-  margin-bottom: 5px;
   cursor: pointer;
-}
-
-.todo__checkbox {
-  vertical-align: middle;
 }
 
 .todo--complete .todo__title{
@@ -158,15 +167,27 @@ export default {
 }
 
 .todo__header {
+  height: 27px;
+  overflow: hidden;
   background: yellow;
 }
 
+.todo__checkbox {
+  float: left;
+}
+
 .todo__title {
-  display: inline-block;
-  vertical-align: middle;
+  float: left;
+  line-height: 27px;
   box-sizing: border-box;
   font-size: 1rem;
   margin-left: 5px;
+}
+
+.todo__delete-button {
+  float: right;
+  width: 27px; height: 27px;
+  background: green;
 }
 
 .todo__body {
