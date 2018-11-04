@@ -35,14 +35,8 @@
 </template>
 
 <script>
-import BaseFormDate from './BaseFormDate.vue';
-
 export default {
   name: 'BaseForm',
-
-  components: {
-    BaseFormDate,
-  },
 
   props: {
     initialTitle: {

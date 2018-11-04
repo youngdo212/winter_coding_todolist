@@ -34,16 +34,12 @@
 </template>
 
 <script>
-import BaseButtonFlag from './components/BaseButtonFlag.vue'
-import BaseForm from './components/BaseForm.vue';
 import Todolist from './components/Todolist.vue';
 
 export default {
   name: 'app',
   
   components: {
-    BaseButtonFlag,
-    BaseForm,
     Todolist,
   },
 

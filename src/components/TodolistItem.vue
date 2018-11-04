@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import BaseForm from './BaseForm.vue';
 import TodolistItemView from './TodolistItemView.vue';
 
 export default {
@@ -33,7 +32,6 @@ export default {
 
   components: {
     TodolistItemView,
-    BaseForm,
   },
 
   props: {
