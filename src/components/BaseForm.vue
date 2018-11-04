@@ -85,7 +85,7 @@ export default {
 <style scoped>
 .form {
   box-sizing: border-box;
-  width: 300px;
+  width: 100%;
   padding: 7px;
   background: #aaa;
   border-radius: 5px;

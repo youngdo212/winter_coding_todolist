@@ -1,8 +1,5 @@
 <template>
   <div id="app">
-    <BaseForm
-      @form-submitted="addTodo"
-    />
     <button
       @click="setFlag('all')"
     >
@@ -24,6 +21,18 @@
       @todo-removed="removeTodo"
       @todo-moved="moveTodo"
     />
+    <div
+      v-if="!formActive"
+      class="create-button"
+      @click="formActive = true;"
+    >
+      + Add Todo
+    </div>
+    <BaseForm
+      v-if="formActive"
+      @form-submitted="addTodo"
+      @form-closed="formActive = false"
+    />
   </div>
 </template>
 
@@ -44,6 +53,7 @@ export default {
       id: 0,
       todos: [],
       flag: 'all',
+      formActive: false,
     }
   },
 
@@ -56,6 +66,7 @@ export default {
 
       Object.assign(todo, form);
       this.todos.push(todo);
+      this.formActive = false;
     },
 
     removeTodo({id}) {
@@ -88,5 +99,25 @@ export default {
 </script>
 
 <style scoped>
+#app {
+  display: inline-block;
+  width: 350px;
+  border-radius: 10px;
+  background: rgb(84, 233, 158);
+  padding: 10px;
+}
 
+.create-button {
+  width: 100%; line-height: 40px;
+  border-radius: 5px;
+  background: rgb(72, 199, 135);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: default;
+  text-align: center;
+}
+
+.create-button:hover {
+  background: rgb(62, 172, 117);
+}
 </style>

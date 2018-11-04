@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="todolist">
     <TodolistItem
       v-for="todo in filteredTodos"
       :key="todo.id"
