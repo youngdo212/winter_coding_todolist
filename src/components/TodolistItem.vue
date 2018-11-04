@@ -65,6 +65,7 @@ export default {
 
     startDrag(e) {
       if(this.editMode) e.preventDefault();
+      
       e.dataTransfer.setData('text/plain', this.todo.id);
     },
 
@@ -78,7 +79,12 @@ export default {
 
       if(sourceId === destinationId) return;
 
-      this.$emit('todo-dropped', {sourceId, destinationId});
+      const position = this.getPosition(e);
+      this.$emit('todo-dropped', {sourceId, destinationId, position});
+    },
+
+    getPosition(e) {
+      return e.offsetY < (e.currentTarget.offsetHeight/2) ? 'before' : 'after';
     },
   },
 }
@@ -87,6 +93,6 @@ export default {
 <style scoped>
 
 .todo-wrap {
-  margin-bottom: 10px;
+  padding: 5px 0;
 }
 </style>

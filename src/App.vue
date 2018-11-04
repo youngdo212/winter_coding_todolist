@@ -25,6 +25,7 @@
       </div>
       <BaseForm
         v-if="formActive"
+        class="create-form"
         @form-submitted="addTodo"
         @form-closed="formActive = false"
       />
@@ -78,8 +79,7 @@ export default {
       this.selectedFlag = flag;
     },
 
-    // refactor
-    moveTodo({sourceId, destinationId}) {
+    moveTodo({sourceId, destinationId, position}) {
       let sourceTodo = null;
 
       this.todos = this.todos.filter((todo) => {
@@ -90,7 +90,8 @@ export default {
 
       this.todos = this.todos.reduce((todos, todo) => {
         if(todo.id !== destinationId) return todos.concat(todo);
-        return todos.concat(todo, sourceTodo);
+
+        return position === 'before' ? todos.concat(sourceTodo, todo) : todos.concat(todo, sourceTodo);
       }, []);
     }
   }
@@ -104,9 +105,6 @@ export default {
   margin-top: 10vh;
   margin-bottom: 10vh;
   width: 350px;
-}
-
-.app__flag {
 }
 
 .app__body {
@@ -123,10 +121,14 @@ export default {
   font-size: 1.2rem;
   cursor: default;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .create-button:hover {
   background: rgb(62, 172, 117);
+}
+
+.create-form {
+  margin-top: 5px;
 }
 </style>
