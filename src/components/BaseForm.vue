@@ -4,6 +4,7 @@
       id="form__title"
       placeholder="Title"
       v-model="title"
+      @keyup.enter="submit"
     >
     <textarea
       id="form__decription"
