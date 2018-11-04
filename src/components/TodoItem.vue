@@ -15,6 +15,7 @@
       <div class="todo__header">
         <BaseCheckBox
           class="todo__checkbox"
+          :initialChecked="todo.done"
           @checked="checkComplete"
         />
         <div
@@ -81,6 +82,12 @@ export default {
       expired: false,
       expanded: false,
     }
+  },
+
+  mounted() {
+    if(!this.todo.done) return;
+
+    this.$refs.timer && this.$refs.timer.end();
   },
 
   methods: {
