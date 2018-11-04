@@ -86,5 +86,6 @@ export default {
   border: 0px; padding: 5px;
   font-size: 1rem;
   margin-top: 2px;
+  box-shadow: inset 1px 1px #aaa;
 }
 </style>

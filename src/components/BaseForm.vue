@@ -98,8 +98,9 @@ export default {
   box-sizing: border-box;
   width: 100%;
   padding: 7px;
-  background: #aaa;
+  background: #f2f2f2;
   border-radius: 5px;
+  box-shadow: 1px 1px 1px #999;
 }
 
 .form__checkbox {
@@ -113,6 +114,7 @@ export default {
   outline: 0px;
   font-size: 1rem;
   margin-bottom: 7px;
+  box-shadow: inset 1px 1px #aaa;
 }
 
 #form__decription {
@@ -125,16 +127,14 @@ export default {
 }
 
 .form__submit-button {
-  width: 70px;
+  width: 90px; line-height: 2rem;
   background: #555;
   border-radius: 5px;
   text-align: center;
   margin: auto;
   margin-top: 10px;
   font-size: 1rem;
-  font-weight: bold;
   color: #fff;
-  padding: 5px 0px;
   cursor: default;
 }
 </style>

@@ -49,6 +49,6 @@ export default {
   border: 1px solid #888;
   background: #fff;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: default;
 }
 </style>

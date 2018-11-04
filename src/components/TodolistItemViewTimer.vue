@@ -1,5 +1,5 @@
 <template>
-  <div>{{formattedRestTime}}</div>
+  <div class="timer">{{formattedRestTime}}</div>
 </template>
 
 <script>
@@ -95,5 +95,10 @@ export default {
 </script>
 
 <style scoped>
-
+.timer {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0px 15px;
+  font-size: 0.8rem;
+}
 </style>

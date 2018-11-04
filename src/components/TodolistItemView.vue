@@ -11,16 +11,21 @@
         @checked="checkComplete"
       />
       <div class="todo__title">{{todo.title}}</div>
-      <div
+      <TodolistItemButtonDelete
         class="todo__delete-button"
-        @click.stop="clickRemove"
+        @button-clicked="clickRemove"
       />
     </div>
     <div
       v-show="state.expanded"
       class="todo__body"
     >
-      <div class="todo__description">{{todo.description}}</div>
+      <div
+        v-if="todo.description"
+        class="todo__description"
+      >
+        {{todo.description}}
+      </div>
       <TodolistItemViewTimer
         v-if="todo.expireTime"
         ref="timer"
@@ -41,6 +46,7 @@
 <script>
 import TodolistItemViewCheckBox from './TodolistItemViewCheckBox.vue';
 import TodolistItemViewTimer from './TodolistItemViewTimer.vue';
+import TodolistItemButtonDelete from './TodolistItemButtonDelete.vue';
 
 export default {
   name: 'TodolistItemView',
@@ -48,6 +54,7 @@ export default {
   components: {
     TodolistItemViewCheckBox,
     TodolistItemViewTimer,
+    TodolistItemButtonDelete,
   },
 
   props: {
@@ -108,9 +115,10 @@ export default {
   box-sizing: border-box;
   width: 100%;
   padding: 7px;
-  background: #aaa;
+  background: #f2f2f2;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 1px 1px 1px #999;
 }
 
 .todo--complete .todo__title{
@@ -122,13 +130,12 @@ export default {
 }
 
 .todo--expired {
-  background: red;
+  background: rgb(250, 93, 93);
 }
 
 .todo__header {
   height: 27px;
   overflow: hidden;
-  background: yellow;
 }
 
 .todo__checkbox {
@@ -140,17 +147,15 @@ export default {
   line-height: 27px;
   box-sizing: border-box;
   font-size: 1rem;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .todo__delete-button {
-  float: right;
   width: 27px; height: 27px;
-  background: green;
+  float: right;
 }
 
 .todo__body {
-  background: orange;
   margin-top: 7px;
 }
 
@@ -160,10 +165,12 @@ export default {
 }
 
 .todo__edit-button {
-  width: 30px;
-  padding: 10px;
+  width: 60px; line-height: 2rem;
   margin: auto;
   border-radius: 5px;
-  background: blue;
+  background: #555;
+  text-align: center;
+  color: #fff;
+  cursor: default;
 }
 </style>
