@@ -2,7 +2,6 @@
   <div
     class="todo-wrap"
     draggable="true"
-    @click="expand"
     @dragstart="startDrag"
     @dragover="moveDrag"
     @drop="drop"
@@ -11,6 +10,7 @@
       v-show="!editMode"
       class="todo"
       :class="{'todo--complete': todo.done, 'todo--expired': expired}"
+      @click="expand"
     >
       <div class="todo__header">
         <BaseCheckBox
