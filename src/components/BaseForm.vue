@@ -23,6 +23,7 @@
       ref="dateFrom"
       v-if="timeSettingMode"
       :initialTime="initialTime"
+      @date-form-submitted="submit"
     />
     <div
       class="form__submit-button"

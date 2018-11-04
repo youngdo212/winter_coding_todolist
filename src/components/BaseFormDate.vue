@@ -2,11 +2,23 @@
   <div class="date-form">
     <div class="date-form__date-wrap">
       <label class="date-form__label" for="date">Date</label>
-      <input id="date-form__input" type="text" placeholder="0000/00/00" v-model="date">
+      <input
+        id="date-form__input"
+        type="text"
+        placeholder="0000/00/00"
+        v-model="date"
+        @keyup.enter="submit"
+      >
     </div>
     <div class="date-form__time-wrap">
       <label class="date-form__label" for="time">Time</label>
-      <input id="date-form__input" type="text" placeholder="00:00" v-model="time">
+      <input
+        id="date-form__input"
+        type="text"
+        placeholder="00:00"
+        v-model="time"
+        @keyup.enter="submit"
+      >
     </div>
   </div>
 </template>
@@ -55,6 +67,10 @@ export default {
         minute: Number(minute),
       }
     },
+
+    submit() {
+      this.$emit('date-form-submitted');
+    }
   }
 }
 </script>
