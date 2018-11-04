@@ -19,6 +19,7 @@
       :initialDescription="todo.description"
       :initialTime="todo.expireTime"
       @form-submitted="save"
+      @form-closed="editMode=false"
     />
   </div>
 </template>

@@ -63,6 +63,17 @@ export default {
     }
   },
 
+  created() {
+    const closeForm = ({target}) => {
+      if(target.closest('.form')) return;
+
+      this.$emit('form-closed');
+      window.removeEventListener('click', closeForm, true);
+    }
+    
+    window.addEventListener('click', closeForm, true);
+  },
+
   methods: {
     submit() {
       if(this.title === '') return;
