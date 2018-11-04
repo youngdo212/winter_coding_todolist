@@ -1,21 +1,13 @@
-# winter_coding_todolist
+# 윈터코딩 todolist 과제
 
-## Project setup
+
+
+## npm 설치하기
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
+### 빌드하기
 ```
 npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
