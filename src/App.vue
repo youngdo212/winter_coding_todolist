@@ -53,6 +53,33 @@ export default {
     }
   },
 
+  mounted() {
+    if(localStorage.getItem('todoStorage')) {
+      try {
+        const {id, todos} = JSON.parse(localStorage.getItem('todoStorage'));
+
+        this.id = id;
+        this.todos = todos;
+
+      } catch(e) {
+        localStorage.removeItem('todoStorage');
+      }
+    }
+  },
+
+  watch: {
+    todos: {
+      deep: true,
+      handler(todos) {
+        const todoStorage = {
+          id: this.id,
+          todos: todos,
+        }
+        localStorage.setItem('todoStorage', JSON.stringify(todoStorage));
+      }
+    }
+  },
+
   methods: {
     addTodo(form) {
       const todo = {
