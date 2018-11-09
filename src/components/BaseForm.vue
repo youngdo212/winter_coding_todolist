@@ -1,6 +1,7 @@
 <template>
   <div class="form">
     <input
+      ref="titleInput"
       id="form__title"
       placeholder="Title"
       v-model="title"
@@ -67,6 +68,10 @@ export default {
     }
     
     window.addEventListener('click', closeForm, true);
+  },
+
+  mounted() {
+    this.$refs.titleInput.focus();
   },
 
   methods: {
