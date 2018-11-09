@@ -72,6 +72,7 @@ export default {
   methods: {
     submit() {
       if(this.title === '') return;
+      if(this.$refs.dateFrom && !this.$refs.dateFrom.isValid()) return;
 
       const form = {
         title: this.title,
@@ -127,7 +128,7 @@ export default {
   border-radius: 5px;
   text-align: center;
   margin: auto;
-  margin-top: 10px;
+  margin-top: 0px;
   font-size: 1rem;
   color: #fff;
   cursor: default;

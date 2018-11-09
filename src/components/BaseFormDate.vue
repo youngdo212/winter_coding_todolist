@@ -3,22 +3,30 @@
     <div class="date-form__date-wrap">
       <label class="date-form__label" for="date">Date</label>
       <input
-        id="date-form__input"
+        ref="dateInput"
+        class="date-form__input"
+        required
+        pattern="^(\d{4})\/(\d{1,2})\/(\d{1,2})$"
         type="text"
         placeholder="0000/00/00"
         v-model="date"
         @keyup.enter="submit"
       >
+      <div class="date-form__error-message">형식이 올바르지 않습니다</div>
     </div>
     <div class="date-form__time-wrap">
       <label class="date-form__label" for="time">Time</label>
       <input
-        id="date-form__input"
+        ref="timeInput"       
+        class="date-form__input"
+        pattern="^(\d{1,2}):(\d{1,2})$"
+        required
         type="text"
         placeholder="00:00"
         v-model="time"
         @keyup.enter="submit"
       >
+      <div class="date-form__error-message">형식이 올바르지 않습니다</div>
     </div>
   </div>
 </template>
@@ -85,6 +93,10 @@ export default {
 
     submit() {
       this.$emit('date-form-submitted');
+    },
+
+    isValid() {
+      return this.$refs.dateInput.checkValidity() && this.$refs.timeInput.checkValidity();
     }
   }
 }
@@ -110,7 +122,7 @@ export default {
   font-size: 0.9rem;
 }
 
-#date-form__input {
+.date-form__input {
   box-sizing: border-box;
   width: 100%;
   outline: 0px;
@@ -118,5 +130,16 @@ export default {
   font-size: 1rem;
   margin-top: 2px;
   box-shadow: inset 1px 1px #aaa;
+}
+
+.date-form__error-message {
+  padding: 5px;
+  color: rgb(252, 107, 107);
+  font-size: 0.8rem;
+  visibility: hidden;
+}
+
+.date-form__input:invalid + .date-form__error-message {
+  visibility: visible;
 }
 </style>
