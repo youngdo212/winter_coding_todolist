@@ -5,15 +5,16 @@
     @click.stop="expand"
   >
     <div class="todo__header">
-      <TodolistItemViewCheckBox
-        class="todo__checkbox"
-        :initialChecked="todo.done"
-        @checked="checkComplete"
-      />
+      <input
+        class="todo__check-box"
+        type="checkbox"
+        v-model="todo.done"
+        @click.stop="completeTodo"
+      >
       <div class="todo__title">{{todo.title}}</div>
-      <TodolistItemButtonDelete
-        class="todo__delete-button"
-        @button-clicked="clickRemove"
+      <div
+        class="todo__remove-button"
+        @click="clickRemove"
       />
     </div>
     <div
@@ -44,17 +45,13 @@
 </template>
 
 <script>
-import TodolistItemViewCheckBox from './TodolistItemViewCheckBox.vue';
 import TodolistItemViewTimer from './TodolistItemViewTimer.vue';
-import TodolistItemButtonDelete from './TodolistItemButtonDelete.vue';
 
 export default {
   name: 'TodolistItemView',
 
   components: {
-    TodolistItemViewCheckBox,
     TodolistItemViewTimer,
-    TodolistItemButtonDelete,
   },
 
   props: {
@@ -87,12 +84,10 @@ export default {
       this.state.expanded = !this.state.expanded;
     },
 
-    checkComplete(checked) {
-      this.todo.done = checked;
-
+    completeTodo({target: {checked}}) {
       if(!this.$refs.timer) return;
 
-      checked ? this.$refs.timer.end() : this.$refs.timer.start();
+      checked? this.$refs.timer.end() : this.$refs.timer.start();
     },
 
     clickRemove() {
@@ -123,10 +118,15 @@ export default {
 
 .todo--complete .todo__title{
   text-decoration: line-through;
+  background: no-repeat url(data:image/svg+xml;base64,PHN2ZwogIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgdmlld0JveD0iMCAwIDEwMCAxMDAiCj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgc3Ryb2tlPSIjY2NjIiBmaWxsPSIjZmZmIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8bGluZSB4MT0iMjUiIHkxPSI1MyIgeDI9IjQ0IiB5Mj0iNzUiIHN0cm9rZT0icmdiKDEsIDEzNCwgODYpIiBzdHJva2Utd2lkdGg9IjQiLz4KICA8bGluZSB4MT0iNzMiIHkxPSIyOSIgeDI9IjQyIiB5Mj0iNzUiIHN0cm9rZT0icmdiKDEsIDEzNCwgODYpIiBzdHJva2Utd2lkdGg9IjQiLz4KPC9zdmc+);
 }
 
 .todo--complete .todo__description, .todo--complete .todo__timer {
   color: rgba(0,0,0,0.3);
+}
+
+.todo:hover .todo__remove-button {
+  display: block;
 }
 
 .todo--expired {
@@ -134,25 +134,34 @@ export default {
 }
 
 .todo__header {
+  position: relative;
   height: 27px;
-  overflow: hidden;
 }
 
-.todo__checkbox {
-  float: left;
+.todo__check-box {
+  width: 27px; height: 27px;
+  position: absolute;
+  top: 0px; left: 0px;
+  margin: 0px;
+  outline: 0px;
+  appearance: none;
 }
 
 .todo__title {
-  float: left;
   line-height: 27px;
   box-sizing: border-box;
   font-size: 1rem;
-  margin-left: 10px;
+  background: no-repeat url(data:image/svg+xml;base64,PHN2ZwogIHdpZHRoPSIyNyIgaGVpZ2h0PSIyNyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgdmlld0JveD0iMCAwIDEwMCAxMDAiCj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgc3Ryb2tlPSIjY2NjIiBmaWxsPSIjZmZmIiBzdHJva2Utd2lkdGg9IjMiLz4KPC9zdmc+);
+  padding-left: 35px;
 }
 
-.todo__delete-button {
+.todo__remove-button {
+  display: none;
+  position: absolute;
+  top: 0px; right: 0px;
   width: 27px; height: 27px;
-  float: right;
+  cursor: default;
+  background: no-repeat center url(data:image/svg+xml;base64,PHN2ZwogIHdpZHRoPSIxMyIgaGVpZ2h0PSIxMyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgdmlld0JveD0iMCAwIDEwMCAxMDAiCj4KICA8bGluZSB4MT0iMCIgeTE9IjAiIHgyPSIxMDAiIHkyPSIxMDAiIHN0cm9rZT0iIzZmMDIwNiIgc3Ryb2tlLXdpZHRoPSIxMCIvPgogIDxsaW5lIHgxPSIwIiB5MT0iMTAwIiB4Mj0iMTAwIiB5Mj0iMCIgc3Ryb2tlPSIjNmYwMjA2IiBzdHJva2Utd2lkdGg9IjEwIi8+Cjwvc3ZnPg==);
 }
 
 .todo__body {
