@@ -38,9 +38,16 @@ export default {
 
   data() {
     return {
-      date: `${new Date(this.initialTime).getFullYear()}/${new Date(this.initialTime).getMonth()+1}/${new Date(this.initialTime).getDate()}`,
-      time: `${new Date(this.initialTime).getHours()}:${new Date(this.initialTime).getMinutes()}`,
+      date: '',
+      time: '',
     }
+  },
+
+  created() {
+    const initialDate = new Date(this.initialTime);
+    
+    this.date = `${initialDate.getFullYear()}/${initialDate.getMonth()+1}/${initialDate.getDate()}`;
+    this.time = `${initialDate.getHours()}:${initialDate.getMinutes()}`;
   },
 
   methods: {
