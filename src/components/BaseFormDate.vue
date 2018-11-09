@@ -45,9 +45,15 @@ export default {
 
   created() {
     const initialDate = new Date(this.initialTime);
+
+    const year = initialDate.getFullYear();
+    const month = (initialDate.getMonth()+1).toString().padStart(2, '0');
+    const date = initialDate.getDate().toString().padStart(2, '0');
+    const hour = initialDate.getHours().toString().padStart(2, '0');
+    const minute = initialDate.getMinutes().toString().padStart(2, '0');
     
-    this.date = `${initialDate.getFullYear()}/${initialDate.getMonth()+1}/${initialDate.getDate()}`;
-    this.time = `${initialDate.getHours()}:${initialDate.getMinutes()}`;
+    this.date = `${year}/${month}/${date}`;
+    this.time = `${hour}:${minute}`;
   },
 
   methods: {
