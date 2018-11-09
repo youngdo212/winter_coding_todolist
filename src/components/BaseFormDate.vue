@@ -30,7 +30,9 @@ export default {
   props: {
     initialTime: {
       type: Number,
-      default: new Date().getTime(),
+      default() {
+        return new Date().getTime();
+      }
     }
   },
 
