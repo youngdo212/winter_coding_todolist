@@ -11,3 +11,8 @@ npm install
 ```
 npm run build
 ```
+
+### test 실행하기
+```
+npm run test:unit
+```
