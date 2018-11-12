@@ -24,7 +24,7 @@
       v-if="timeSettingMode"
       class="form__Date"
       placeholder="0000/00/00"
-      pattern="^(\d{4})\/(\d{1,2})\/(\d{1,2})$"
+      pattern="^\d{4}\/\d{1,2}\/\d{1,2}$"
       required
       label="Date"
       v-model="date"
@@ -34,7 +34,7 @@
       v-if="timeSettingMode"
       class="form__Time"
       placeholder="00:00"
-      pattern="^(\d{1,2}):(\d{1,2})$"
+      pattern="^\d{1,2}:\d{1,2}$"
       required
       label="Time"
       v-model="time"
@@ -125,7 +125,7 @@ export default {
     },
 
     submit() {
-      if(this.title === '') return;
+      if(!this.isValidForm()) return;
 
       const form = {
         title: this.title,
@@ -134,6 +134,14 @@ export default {
       };
 
       this.$emit('form-submitted', form);
+    },
+
+    isValidForm() {
+      if(this.title === '') return false;
+      if(!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(this.date)) return false;
+      if(!/^\d{1,2}:\d{1,2}$/.test(this.time)) return false;
+
+      return true;
     },
   },
 }
