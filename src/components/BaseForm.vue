@@ -4,6 +4,7 @@
       class="form__title"
       placeholder="Title"
       v-model="title"
+      :autofocus="true"
       @keyup.enter="submit"
     />
     <BaseFormInput
@@ -22,21 +23,21 @@
     <BaseFormInput
       v-if="timeSettingMode"
       class="form__Date"
-      :label="'Date'"
-      v-model="date"
       placeholder="0000/00/00"
       pattern="^(\d{4})\/(\d{1,2})\/(\d{1,2})$"
       required
+      label="Date"
+      v-model="date"
       @keyup.enter="submit"
     />
     <BaseFormInput
       v-if="timeSettingMode"
       class="form__Time"
-      :label="'Time'"
-      v-model="time"
       placeholder="00:00"
       pattern="^(\d{1,2}):(\d{1,2})$"
       required
+      label="Time"
+      v-model="time"
       @keyup.enter="submit"
     />
     <div
@@ -70,7 +71,7 @@ export default {
       description: this.initialDescription,
       date: '',
       time: '',
-      timeSettingMode: this.initialTime ? true : false,
+      timeSettingMode: false,
     }
   },
 
@@ -85,12 +86,11 @@ export default {
     window.addEventListener('click', closeForm, true);
   },
 
+  // set timeSettingMode
   mounted() {
-    // this.$refs.titleInput.focus();
-
     if(!this.initialTime) return;
 
-    this.setFormattedTime(this.initialTime);
+    this.timeSettingMode = true;
   },
 
   watch: {

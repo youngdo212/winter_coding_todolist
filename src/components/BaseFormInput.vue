@@ -7,8 +7,8 @@
       {{label}}
     </label>
     <input
+      ref="input"
       class="input-form__input"
-      type="text"
       v-bind="$attrs"
       :value="value"
       v-on="inputListener"
@@ -31,7 +31,17 @@ export default {
     value: {
       type: String,
       default: '',
+    },
+    autofocus: {
+      type: Boolean,
+      default: false,
     }
+  },
+
+  mounted() {
+    if(!this.autofocus) return;
+
+    this.$refs.input.focus();
   },
 
   computed: {
