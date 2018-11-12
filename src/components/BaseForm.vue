@@ -1,14 +1,13 @@
 <template>
   <div class="form">
-    <input
-      ref="titleInput"
-      id="form__title"
+    <BaseFormInput
+      class="form__title"
       placeholder="Title"
       v-model="title"
       @keyup.enter="submit"
-    >
-    <textarea
-      id="form__decription"
+    />
+    <BaseFormInput
+      class="form__decription"
       placeholder="Description"
       v-model="description"
     />
@@ -20,11 +19,25 @@
         v-model="timeSettingMode"
       >
     </div>
-    <BaseFormDate
-      ref="dateFrom"
+    <BaseFormInput
       v-if="timeSettingMode"
-      :initialTime="initialTime"
-      @date-form-submitted="submit"
+      class="form__Date"
+      :label="'Date'"
+      v-model="date"
+      placeholder="0000/00/00"
+      pattern="^(\d{4})\/(\d{1,2})\/(\d{1,2})$"
+      required
+      @keyup.enter="submit"
+    />
+    <BaseFormInput
+      v-if="timeSettingMode"
+      class="form__Time"
+      :label="'Time'"
+      v-model="time"
+      placeholder="00:00"
+      pattern="^(\d{1,2}):(\d{1,2})$"
+      required
+      @keyup.enter="submit"
     />
     <div
       class="form__submit-button"
@@ -55,6 +68,8 @@ export default {
     return {
       title: this.initialTitle,
       description: this.initialDescription,
+      date: '',
+      time: '',
       timeSettingMode: this.initialTime ? true : false,
     }
   },
@@ -71,24 +86,54 @@ export default {
   },
 
   mounted() {
-    this.$refs.titleInput.focus();
+    // this.$refs.titleInput.focus();
+
+    if(!this.initialTime) return;
+
+    this.setFormattedTime(this.initialTime);
+  },
+
+  watch: {
+    timeSettingMode(on) {
+      if(!on) return;
+
+      this.setFormattedTime(this.initialTime || new Date().getTime());
+    }
   },
 
   methods: {
+    setFormattedTime(time) {
+      const targetDate = new Date(time);
+
+      const year = targetDate.getFullYear();
+      const month = (targetDate.getMonth()+1).toString().padStart(2, '0');
+      const date = targetDate.getDate().toString().padStart(2, '0');
+      const hour = targetDate.getHours().toString().padStart(2, '0');
+      const minute = targetDate.getMinutes().toString().padStart(2, '0');
+      
+      this.date = `${year}/${month}/${date}`;
+      this.time = `${hour}:${minute}`;
+    },
+
+    deformatTime(){
+      if(!this.timeSettingMode) return;
+
+      const [, year, month, date] = this.date.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+      const [, hour, minute] = this.time.match(/^(\d{1,2}):(\d{1,2})$/);
+
+      return new Date(year, month-1, date, hour, minute).getTime();
+    },
+
     submit() {
       if(this.title === '') return;
-      if(this.$refs.dateFrom && !this.$refs.dateFrom.isValid()) return;
 
       const form = {
         title: this.title,
         description: this.description,
-        expireTime: this.timeSettingMode ? this.$refs.dateFrom.getTime() : undefined,
+        expireTime: this.deformatTime(),
       };
 
       this.$emit('form-submitted', form);
-      this.title = '';
-      this.description= '';
-      this.timeSettingMode = false;
     },
   },
 }
@@ -102,25 +147,21 @@ export default {
   background: #f2f2f2;
   border-radius: 5px;
   box-shadow: 1px 1px 1px #999;
+  overflow: hidden;
 }
 
 .form__checkbox {
   margin-bottom: 5px;
 }
 
-#form__title, #form__decription {
+.form__title, .form__decription {
   box-sizing: border-box;
   width: 100%;
-  border: 0px; padding: 5px;
-  outline: 0px;
-  font-size: 1rem;
   margin-bottom: 7px;
-  box-shadow: inset 1px 1px #aaa;
 }
 
-#form__decription {
+.form__decription {
   resize: none;
-  line-height: 1.3rem;
 }
 
 .form__time-checkbox-wrap {
@@ -137,5 +178,16 @@ export default {
   font-size: 1rem;
   color: #fff;
   cursor: default;
+  clear: left;
+}
+
+.form__Date {
+  float: left;
+  width: 45%; height: 80px;
+}
+
+.form__Time {
+  float: right;
+  width: 45%; height: 80px;
 }
 </style>
