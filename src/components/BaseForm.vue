@@ -24,20 +24,18 @@
       v-if="timeSettingMode"
       class="form__Date"
       placeholder="0000/00/00"
-      pattern="^\d{4}\/\d{1,2}\/\d{1,2}$"
-      required
       label="Date"
-      v-model="date"
+      v-model="dateFormat"
+      :validity="isValidDateFormat(this.dateFormat)"
       @keyup.enter="submit"
     />
     <BaseFormInput
       v-if="timeSettingMode"
       class="form__Time"
       placeholder="00:00"
-      pattern="^\d{1,2}:\d{1,2}$"
-      required
       label="Time"
-      v-model="time"
+      v-model="timeFormat"
+      :validity="isValidTimeFormat(this.timeFormat)"
       @keyup.enter="submit"
     />
     <div
@@ -69,8 +67,8 @@ export default {
     return {
       title: this.initialTitle,
       description: this.initialDescription,
-      date: '',
-      time: '',
+      dateFormat: '',
+      timeFormat: '',
       timeSettingMode: false,
     }
   },
@@ -97,52 +95,75 @@ export default {
     timeSettingMode(on) {
       if(!on) return;
 
-      this.setFormattedTime(this.initialTime || new Date().getTime());
+      const {dateFormat, timeFormat} = this.format(this.initialTime || new Date().getTime());
+      
+      this.dateFormat = dateFormat;
+      this.timeFormat = timeFormat;
     }
   },
 
   methods: {
-    setFormattedTime(time) {
-      const targetDate = new Date(time);
+    format(time) {
+      const date = new Date(time);
 
-      const year = targetDate.getFullYear();
-      const month = (targetDate.getMonth()+1).toString().padStart(2, '0');
-      const date = targetDate.getDate().toString().padStart(2, '0');
-      const hour = targetDate.getHours().toString().padStart(2, '0');
-      const minute = targetDate.getMinutes().toString().padStart(2, '0');
-      
-      this.date = `${year}/${month}/${date}`;
-      this.time = `${hour}:${minute}`;
+      return {
+        dateFormat: this.formatDate(date),
+        timeFormat: this.formatTime(date),
+      }
     },
 
-    deformatTime(){
-      if(!this.timeSettingMode) return;
+    formatDate(date) {
+      const yearFormat = date.getFullYear();
+      const monthFormat = (date.getMonth()+1).toString().padStart(2, '0');
+      const dateFormat = date.getDate().toString().padStart(2, '0');
 
-      const [, year, month, date] = this.date.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
-      const [, hour, minute] = this.time.match(/^(\d{1,2}):(\d{1,2})$/);
+      return `${yearFormat}/${monthFormat}/${dateFormat}`;
+    },
+
+    formatTime(date) {
+      const hourFormat = date.getHours().toString().padStart(2, '0');
+      const minuteFormat = date.getMinutes().toString().padStart(2, '0');
+      
+      return `${hourFormat}:${minuteFormat}`;
+    },
+
+    deformat({dateFormat, timeFormat}){
+      const [, year, month, date] = dateFormat.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+      const [, hour, minute] = timeFormat.match(/^(\d{1,2}):(\d{1,2})$/);
 
       return new Date(year, month-1, date, hour, minute).getTime();
     },
 
     submit() {
-      if(!this.isValidForm()) return;
+      if(!this.isValidForm(this)) return;
 
       const form = {
         title: this.title,
         description: this.description,
-        expireTime: this.deformatTime(),
+        expireTime: this.timeSettingMode ? this.deformat({
+          dateFormat: this.dateFormat,
+          timeFormat: this.timeFormat,
+        }) : undefined,
       };
 
       this.$emit('form-submitted', form);
     },
 
-    isValidForm() {
-      if(this.title === '') return false;
-      if(!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(this.date)) return false;
-      if(!/^\d{1,2}:\d{1,2}$/.test(this.time)) return false;
-
-      return true;
+    // @param {vue instance} form
+    isValidForm(form) {
+      if(form.title === '') return false;
+      
+      return form.timeSettingMode ? this.isValidDateFormat(form.dateFormat) && this.isValidTimeFormat(form.timeFormat)
+       : true;
     },
+
+    isValidDateFormat(dateFormat) {
+      return /^\d{4}\/\d{1,2}\/\d{1,2}$/.test(dateFormat);
+    },
+
+    isValidTimeFormat(timeFormat) {
+      return /^\d{1,2}:\d{1,2}$/.test(timeFormat);
+    }
   },
 }
 </script>

@@ -13,7 +13,12 @@
       :value="value"
       v-on="inputListener"
     >
-    <div class="input-form__message">형식이 올바르지 않습니다</div>
+    <div
+      class="input-form__message"
+      v-show="!validity"
+    >
+      형식이 올바르지 않습니다
+    </div>
   </div>
 </template>
 
@@ -35,6 +40,10 @@ export default {
     autofocus: {
       type: Boolean,
       default: false,
+    },
+    validity: {
+      type: Boolean,
+      default: true,
     }
   },
 
@@ -77,11 +86,6 @@ export default {
   padding: 5px;
   color: rgb(252, 107, 107);
   font-size: 0.8rem;
-  display: none;
-}
-
-.input-form__input:invalid + .input-form__message {
-  display: block;
 }
 
 </style>
